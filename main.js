@@ -6,6 +6,8 @@ const newcalorieInstanceForm = document.getElementById("new-calorie-form");
 const calorieInstanceList = document.getElementById("calories-list");
 const progressBar = document.querySelector(".uk-progress");
 const editCalorieForm = document.getElementById("edit-calorie-form");
+const editCalorieField = document.getElementById("edit-calories");
+const editNotesField = document.getElementById("edit-notes");
 const bmrCalculatorForm = document.getElementById("bmr-calculator")
 const lowerBmrSpan = document.getElementById("lower-bmr-range");
 const upperBmrSpam = document.getElementById("higher-bmr-range")
@@ -15,7 +17,6 @@ let calorieTotal = 0;
     /***** EVENT LISTENERS *****/
 newcalorieInstanceForm.addEventListener("submit", handleCalorieFormSubmit);
 // deleteButton listener is defined below in the renderOneCalorieInstance function
-editCalorieForm.addEventListener("submit", handleCalorieEditFormSubmit);
 bmrCalculatorForm.addEventListener("submit", handleBmrCalculatorFormSubmit)
 
     /***** EVENT HANDLERS *****/
@@ -37,7 +38,19 @@ function handleDeleteButton(event) {
 };
 
 function handleCalorieEditFormSubmit(event) {
+  event.preventDefault();
+  
+  let newCalories = event.target["edit-calories"].value;
+  let newNotes = event.target["edit-notes"].value;
 
+  calorieId = targetCalorieInstanceId;
+
+  updateCalorieObj = {
+    calorie: newCalories,
+    note: newNotes
+  };
+
+  patchCalorieFetch(updateCalorieObj);
 };
 
 function handleBmrCalculatorFormSubmit(event) {
@@ -52,6 +65,17 @@ function handleBmrCalculatorFormSubmit(event) {
 
   lowerBmrSpan.textContent = lowerRangeBMR;
   upperBmrSpam.textContent = upperRangeBMR;
+};
+
+function handleEditButton(event) {
+  targetCalorieLi = event.target.closest("li");
+  targetCalorieInstanceId = targetCalorieLi.id;
+
+  editCalorieField.placeholder = document.getElementById(`${targetCalorieInstanceId}-calories`).textContent;
+  editNotesField.placeholder = document.getElementById(`${targetCalorieInstanceId}-notes`).textContent;
+
+  editCalorieForm.addEventListener("submit", handleCalorieEditFormSubmit);
+
 };
   
     /***** FETCHES *****/
@@ -83,6 +107,20 @@ const deleteCalorieFetch = function(calorieInstanceLi) {
   })
   .then( () => calorieInstanceLi.remove() )
 };
+
+// PATCH fetch to update a calorie object
+const patchCalorieFetch = function(updateCalorieObj) {
+  fetch(`http://localhost:3000/api/v1/calorie_entries/${calorieId}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(updateCalorieObj)
+  })
+  .then( response => response.json() )
+  .then( calorieInstance => renderUpdatedCalorieInstance(calorieInstance) )
+}
   
     /***** RENDER FUNCTIONS *****/
 function renderOneCalorieInstance(newCalorieInstance) {
@@ -92,11 +130,11 @@ function renderOneCalorieInstance(newCalorieInstance) {
   calorieInstanceLi.innerHTML = `
   <div class="uk-grid">
     <div class="uk-width-1-6">
-      <strong>${newCalorieInstance.calorie}</strong>
+      <strong id="${newCalorieInstance.id}-calories">${newCalorieInstance.calorie}</strong>
       <span>kcal</span>
     </div>
     <div class="uk-width-4-5">
-      <em class="uk-text-meta">${newCalorieInstance.note}</em>
+      <em id="${newCalorieInstance.id}-notes" class="uk-text-meta">${newCalorieInstance.note}</em>
     </div>
   </div>
   <div class="list-item-menu">
@@ -110,11 +148,32 @@ function renderOneCalorieInstance(newCalorieInstance) {
 
   let deleteButton = document.querySelector(".delete-button");
   deleteButton.addEventListener("click", handleDeleteButton);
+
+  let editButton = document.querySelector(".edit-button")
+  editButton.addEventListener("click", handleEditButton)
 };
 function renderAllCalorieInstances(calorieInstances) {
   calorieInstances.forEach( instance => renderOneCalorieInstance(instance) );
 };
-  
+
+function renderUpdatedCalorieInstance(calorieInstance) {
+  calorieInstanceLiToUpdate = document.getElementById(calorieInstance.id);
+  calorieInstanceLiToUpdate.innerHTML = `
+  <div class="uk-grid">
+    <div class="uk-width-1-6">
+      <strong id="${calorieInstance.id}-calories">${calorieInstance.calorie}</strong>
+      <span>kcal</span>
+    </div>
+    <div class="uk-width-4-5">
+      <em id="${calorieInstance.id}-notes" class="uk-text-meta">${calorieInstance.note}</em>
+    </div>
+  </div>
+  <div class="list-item-menu">
+    <a class="edit-button" uk-toggle="target: #edit-form-container" uk-icon="icon: pencil"></a>
+    <a class="delete-button" uk-icon="icon: trash"></a>
+  </div>`
+}
+
     /***** MISC. FUNCTIONS *****/
   
   
