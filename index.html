@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
+  <title>Flatiron Calorie Counter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -23,16 +23,16 @@
 
     <!-- The left DIV containing features pertaining to BMR -->
     <div class="uk-width-1-3 uk-card uk-card-default uk-padding uk-margin-left">
-      <form id="bmr-calulator" class="uk-card-header">
+      <form id="bmr-calculator" class="uk-card-header">
         <h3>Basal Metabolic Rate</h3>
         <div class="uk-margin-small">
-          <input class="uk-input" type="number" placeholder="Weight (lbs)" min="1">
+          <input class="uk-input" type="number" name ="weight" placeholder="Weight (lbs)" min="1">
         </div>
         <div class="uk-margin-small">
-          <input class="uk-input" type="number" placeholder="Height (inches)" min="1">
+          <input class="uk-input" type="number" name="height" placeholder="Height (inches)" min="1">
         </div>
         <div class="uk-margin-small">
-          <input class="uk-input" type="number" placeholder="Age (years)" min="1">
+          <input class="uk-input" type="number" name="age" placeholder="Age (years)" min="1">
         </div>
         <button class="uk-button uk-button-default"
           uk-tooltip="title: BMR (Basal Metabolic Rate) is the number of calories required to keep your body functioning at rest. This is the amount of calories your body burns even if you did nothing all day.; pos: left">Calculate
@@ -57,64 +57,17 @@
         <h3>Record calorie intake:</h3>
         <div>
           <div class="uk-margin-small">
-            <input type="number" class="uk-input" min="0" placeholder="Calories (kcal)">
+            <input type="number" class="uk-input" min="0" name="calories" placeholder="Calories (kcal)">
           </div>
           <div class="uk-margin-small">
-            <textarea type="text" class="uk-textarea" placeholder="Notes" style="resize:none"></textarea>
+            <textarea type="text" class="uk-textarea" name="notes" placeholder="Notes" style="resize:none"></textarea>
           </div>
           <button class="uk-button uk-button-default">Add Calorie Intake</button>
         </div>
       </form>
 
       <ul id="calories-list" class="uk-list uk-list-striped">
-        <li class="calories-list-item">
-          <div class="uk-grid">
-            <div class="uk-width-1-6">
-              <strong>400</strong>
-              <span>kcal</span>
-            </div>
-            <div class="uk-width-4-5">
-              <em class="uk-text-meta">Lorem ipsum dolores, some other filler text that I cannot rememeber the rest
-                of...</em>
-            </div>
-          </div>
-          <div class="list-item-menu">
-            <a class="edit-button" uk-icon="icon: pencil" uk-toggle="target: #edit-form-container"></a>
-            <a class="delete-button" uk-icon="icon: trash"></a>
-          </div>
-        </li>
-        <li class="calories-list-item">
-          <div class="uk-grid">
-            <div class="uk-width-1-6">
-              <strong>400</strong>
-              <span>kcal</span>
-            </div>
-            <div class="uk-width-4-5">
-              <em class="uk-text-meta">Lorem ipsum dolores, some other filler text that I cannot rememeber the rest
-                of...</em>
-            </div>
-          </div>
-          <div class="list-item-menu">
-            <a class="edit-button" uk-icon="icon: pencil" uk-toggle="target: #edit-form-container"></a>
-            <a class="delete-button" uk-icon="icon: trash"></a>
-          </div>
-        </li>
-        <li class="calories-list-item">
-          <div class="uk-grid">
-            <div class="uk-width-1-6">
-              <strong>400</strong>
-              <span>kcal</span>
-            </div>
-            <div class="uk-width-4-5">
-              <em class="uk-text-meta">Lorem ipsum dolores, some other filler text that I cannot rememeber the rest
-                of...</em>
-            </div>
-          </div>
-          <div class="list-item-menu">
-            <a class="edit-button" uk-icon="icon: pencil" uk-toggle="target: #edit-form-container"></a>
-            <a class="delete-button" uk-icon="icon: trash"></a>
-          </div>
-        </li>
+        <!-- calorie list items go here -->
       </ul>
     </div>
   </main>
